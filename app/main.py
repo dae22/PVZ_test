@@ -34,14 +34,14 @@ async def login(user: UserLogin):
 
 @app.post("/pickup_points")
 async def create_pickup_point(pvz: PVZCreate, token: str = Depends(oauth2_scheme)):
-    if token != "dummy_moderator_token":
+    if not token.startswith("dummy_moderator"):
         raise HTTPException(status_code=403, detail="Только модераторы могут создавать ПВЗ")
     pickup_point_id = await create_pickup_point(pvz.city)
     return {"pickup_point_id": pickup_point_id, "city": pvz.city}
 
 @app.post("/receptions")
 async def create_receptions(reception: ReceptionCreate, token: str = Depends(oauth2_scheme)):
-    if token != "dummy_staff_token":
+    if not token.startswith("dummy_staff"):
         raise HTTPException(status_code=403, detail="Только сотрудники могут создавать приемки")
     try:
         reception_id = await create_reception(reception.pickup_point_id)
@@ -51,7 +51,7 @@ async def create_receptions(reception: ReceptionCreate, token: str = Depends(oau
 
 @app.post("/products")
 async def add_products(pickup_point_id: int, product: ProductCreate, token: str = Depends(oauth2_scheme)):
-    if token != "dummy_staff_token":
+    if not token.startswith("dummy_staff"):
         raise HTTPException(status_code=403, detail="Только сотрудники могут добавлять товары")
     try:
         product_id = await add_product(pickup_point_id, product.type)
@@ -61,7 +61,7 @@ async def add_products(pickup_point_id: int, product: ProductCreate, token: str 
 
 @app.delete("/products/last")
 async def remove_last_product(pickup_point_id: int, token: str = Depends(oauth2_scheme)):
-    if token != "dummy_staff_token":
+    if not token.startswith("dummy_staff"):
         raise HTTPException(status_code=403, detail="Только сотрудники могут удалять товары")
     try:
         await remove_last(pickup_point_id)
@@ -71,7 +71,7 @@ async def remove_last_product(pickup_point_id: int, token: str = Depends(oauth2_
 
 @app.post("/receptions/close")
 async def close_reception(pickup_point_id: int, token: str = Depends(oauth2_scheme)):
-    if token != "dummy_staff_token":
+    if not token.startswith("dummy_staff"):
         raise HTTPException(status_code=403, detail="Только сотрудники могут закрывать приемки")
     try:
         await close_reception(pickup_point_id)
@@ -81,6 +81,6 @@ async def close_reception(pickup_point_id: int, token: str = Depends(oauth2_sche
 
 @app.get("/pickup_points")
 async def get_pickup_points(start: datetime, end: datetime, token: str = Depends(oauth2_scheme)):
-    if token not in ["dummy_staff_token", "dummy_moderator_token"]:
+    if not token.startswith("dummy_staff") or not token.startswith("dummy_moderator"):
         raise HTTPException(status_code=403, detail="Только сотрудники и модераторы могут просматривать ПВЗ")
     return await get_pp_and_receptions(start, end)
