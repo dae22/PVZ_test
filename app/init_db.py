@@ -8,7 +8,7 @@ async def create_table_users():
     await conn.execute(''' CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
-    hashed_password TEXT NOT NULL,
+    password TEXT NOT NULL,
     role TEXT NOT NULL
     )
 ''')
