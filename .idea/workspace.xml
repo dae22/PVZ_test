@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3096774c-50cd-4663-a244-b7fe1011a419" name="Changes" comment="ignore change">
+    <list default="true" id="3096774c-50cd-4663-a244-b7fe1011a419" name="Changes" comment="add main and models">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/init_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/init_db.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +57,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create folder" />
     <MESSAGE value="ignore change" />
-    <option name="LAST_COMMIT_MESSAGE" value="ignore change" />
+    <MESSAGE value="add main and models" />
+    <option name="LAST_COMMIT_MESSAGE" value="add main and models" />
   </component>
 </project>
