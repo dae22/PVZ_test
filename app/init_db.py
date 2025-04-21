@@ -29,7 +29,7 @@ async def create_table_receptions():
     await conn.execute('''CREATE TABLE IF NOT EXISTS receptions (
     id SERIAL PRIMARY KEY,
     date_time TIMESTAMP NOT NULL,
-    pickup_point_id UUID REFERENCES pickup_points(id),
+    pickup_point_id INTEGER REFERENCES pickup_points(id),
     status TEXT NOT NULL
     )
 ''')
@@ -40,7 +40,7 @@ async def create_table_products():
     await conn.execute('''CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,
     date_time TIMESTAMP NOT NULL,
-    reception_id UUID REFERENCES receptions(id),
+    reception_id INTEGER REFERENCES receptions(id),
     product_type TEXT NOT NULL
     )
 ''')
