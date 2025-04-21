@@ -34,8 +34,7 @@ async def login(user: UserLogin):
 
 @app.post("/pickup_points")
 async def create_pickup_point(pvz: PVZCreate, token: str = Depends(oauth2_scheme)):
-    print(token.split())
-    if token.startswith("dummy_moderator"):
+    if token != "dummy_moderator_token":
         raise HTTPException(status_code=403, detail="Только модераторы могут создавать ПВЗ")
     pickup_point_id = await create_pickup_point(pvz.city)
     return {"pickup_point_id": pickup_point_id, "city": pvz.city}
