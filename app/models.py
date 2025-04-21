@@ -7,9 +7,11 @@ DATABASE_URL = "postgresql://dae22:1998@localhost/mydatabase"
 database = Database(DATABASE_URL)
 
 
-USER_ROLES = {"client", "moderator"}
 CITIES = {"Москва", "Санкт-Петербург", "Казань"}
 
+
+class Dummy(BaseModel):
+    role: str
 
 class UserCreate(BaseModel):
     email: str
@@ -42,7 +44,7 @@ async  def create_user(user: UserCreate):
 
 async def login_user(user: UserLogin):
     query = "SELECT * FROM users WHERE email=:email AND password=:password"
-    return await database.fetch_one(query=query, values=UserLogin.dict())
+    return await database.fetch_one(query, {"email": user.email, "password": user.password})
 
 async def create_pickup_point(city: str):
     if city not in CITIES:

@@ -17,12 +17,13 @@ async def shutdown():
 
 
 @app.post("/dummyLogin")
-async def dummy_login(role: str):
-    return {"access_token": f"dummy_{role}_token"}
+async def dummy_login(dummy: Dummy):
+    return {"access_token": f"dummy_{dummy.role}_token"}
 
 @app.post("/register")
 async def registration(user: UserCreate):
     await create_user(user)
+    return {"message": "Пользователь зарегистрирован"}
 
 @app.post("/login")
 async def login(user: UserLogin):
@@ -32,11 +33,12 @@ async def login(user: UserLogin):
     return {"access_token": f"dummy_{db_user['role']}_token"}
 
 @app.post("/pickup_points")
-async def create_pickup_point(pickup_point: PVZCreate, token: str = Depends(oauth2_scheme)):
-    if token != "dummy_moderator_token":
+async def create_pickup_point(pvz: PVZCreate, token: str = Depends(oauth2_scheme)):
+    print(token.split())
+    if token.startswith("dummy_moderator"):
         raise HTTPException(status_code=403, detail="Только модераторы могут создавать ПВЗ")
-    pickup_point_id = await create_pickup_point(pickup_point.city)
-    return {"pickup_point_id": pickup_point_id, "city": pickup_point.city}
+    pickup_point_id = await create_pickup_point(pvz.city)
+    return {"pickup_point_id": pickup_point_id, "city": pvz.city}
 
 @app.post("/receptions")
 async def create_receptions(reception: ReceptionCreate, token: str = Depends(oauth2_scheme)):
