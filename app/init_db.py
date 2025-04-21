@@ -18,7 +18,7 @@ async def create_table_pickup():
     conn = await asyncpg.connect(DATABASE_URL)
     await conn.execute(''' CREATE TABLE IF NOT EXISTS pickup_points (
     id SERIAL PRIMARY KEY,
-    registration_date TIMESTAMP NOT NULL,
+    registration_date TIMESTAMP NOT NULL DEFAULT now(),
     city TEXT NOT NULL
     )
 ''')
@@ -28,8 +28,8 @@ async def create_table_receptions():
     conn = await asyncpg.connect(DATABASE_URL)
     await conn.execute('''CREATE TABLE IF NOT EXISTS receptions (
     id SERIAL PRIMARY KEY,
-    date_time TIMESTAMP NOT NULL,
-    pickup_point_id INTEGER REFERENCES pickup_points(id),
+    date TIMESTAMP NOT NULL DEFAULT now(),
+    pickup_point_id INTEGER NOT NULL REFERENCES pickup_points(id),
     status TEXT NOT NULL
     )
 ''')
@@ -39,7 +39,7 @@ async def create_table_products():
     conn = await asyncpg.connect(DATABASE_URL)
     await conn.execute('''CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,
-    date_time TIMESTAMP NOT NULL,
+    date TIMESTAMP NOT NULL,
     reception_id INTEGER REFERENCES receptions(id),
     product_type TEXT NOT NULL
     )
